@@ -7,7 +7,7 @@ import (
 	"github.com/clipperhouse/segmenter/words"
 )
 
-func TestSegments(t *testing.T) {
+func TestSegmenter(t *testing.T) {
 	var passed, failed int
 	for _, test := range unicodeTests {
 

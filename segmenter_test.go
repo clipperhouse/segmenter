@@ -8,7 +8,7 @@ import (
 	"github.com/clipperhouse/segmenter/whitespace"
 )
 
-func TestSegments(t *testing.T) {
+func TestUnicodeWords(t *testing.T) {
 	segment := segmenter.New(whitespace.SegmentFunc)
 	segment.SetText([]byte("hi   how are you!!  \nand more\r"))
 
