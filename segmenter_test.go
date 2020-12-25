@@ -8,6 +8,10 @@ import (
 	"github.com/clipperhouse/segmenter/whitespace"
 )
 
+// See words/segmenter_test.go for a real test
+
+// TODO: figure out how to test Segmenter logic independent of SegmentFunc implementations
+
 func TestUnicodeWords(t *testing.T) {
 	segment := segmenter.New(whitespace.SegmentFunc)
 	segment.SetText([]byte("hi   how are you!!  \nand more\r"))
