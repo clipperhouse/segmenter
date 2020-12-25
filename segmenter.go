@@ -29,6 +29,9 @@ type Segmenter struct {
 	err error
 }
 
+var _ Forward = &Segmenter{}
+var _ Bidirectional = &Segmenter{}
+
 // New creates a new segmenter given a SegmentFunc. To use the new segmenter,
 // call SetText() and then iterate using Next()
 func New(f SegmentFunc) *Segmenter {
