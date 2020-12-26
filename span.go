@@ -31,5 +31,5 @@ func (st *stack) pop() (span, bool) {
 }
 
 func (st *stack) clear() {
-	st.items = nil
+	st.items = st.items[:0]
 }

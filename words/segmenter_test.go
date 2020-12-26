@@ -1,6 +1,7 @@
 package words_test
 
 import (
+	"io/ioutil"
 	"reflect"
 	"testing"
 
@@ -34,4 +35,31 @@ spec      %s`, test.input, test.expected, got, test.comment)
 		}
 	}
 	t.Logf("passed %d, failed %d", passed, failed)
+}
+
+func BenchmarkSegmenter(b *testing.B) {
+	file, err := ioutil.ReadFile("testdata/sample.txt")
+
+	if err != nil {
+		b.Error(err)
+	}
+
+	b.ResetTimer()
+	b.SetBytes(int64(len(file)))
+
+	seg := words.NewSegmenter(file)
+
+	for i := 0; i < b.N; i++ {
+		seg.SetText(file)
+
+		c := 0
+		for seg.Next() {
+			c++
+		}
+		if err := seg.Err(); err != nil {
+			b.Error(err)
+		}
+
+		b.ReportMetric(float64(c), "tokens")
+	}
 }
