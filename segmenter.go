@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-// SegmentFunc is the most primitive, stateless unit for segmentation, and
+// SegmentFunc is the primitive, stateless unit for segmentation, and is
 // where your implementation logic will live. It takes a byte slice and returns
 // the boundaries of the first segment (token) in that slice.
 //
@@ -13,6 +13,9 @@ import (
 //
 // end is the index of the first byte *following* the first segment.
 // It's intended to be used for slicing, e.g. data[start:end].
+//
+// To indicate that there are no valid segments, return end = 0. (For example,
+// a whitespace splitter operating on data that is only whitespace.)
 //
 // SegmentFunc is similar in spirit to bufio.SplitFunc, but offers more
 // granular position information.
@@ -74,7 +77,7 @@ func (seg *Segmenter) Next() bool {
 		return false
 	}
 
-	if start == end {
+	if end == 0 {
 		return false
 	}
 
@@ -84,7 +87,8 @@ func (seg *Segmenter) Next() bool {
 	}
 
 	if next.end > len(seg.data) {
-		seg.err = fmt.Errorf("the end of the next segment (%d) exceeds the length of the text (%d); this is likely a bug in the SegmentFunc", next.end, len(seg.data))
+		seg.err = fmt.Errorf("the end of the next segment (%d) exceeds the length of the text (%d); this is likely a bug in the SegmentFunc",
+			next.end, len(seg.data))
 		return false
 	}
 
