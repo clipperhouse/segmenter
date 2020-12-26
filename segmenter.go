@@ -145,14 +145,16 @@ func AsSplitFunc(f SegmentFunc, data []byte, atEOF bool) (advance int, token []b
 
 	start, end, err := f(data, atEOF)
 
-	if errors.Is(err, ErrIncompleteRune) && !atEOF {
-		// Rune extends past current data, request more
-		return 0, nil, nil
-	}
+	if err != nil && !atEOF {
+		if errors.Is(err, ErrIncompleteRune) {
+			// Rune extends past current data, request more
+			return 0, nil, nil
+		}
 
-	if errors.Is(err, ErrIncompleteToken) && !atEOF {
-		// Token extends past current data, request more
-		return 0, nil, nil
+		if errors.Is(err, ErrIncompleteToken) {
+			// Token extends past current data, request more
+			return 0, nil, nil
+		}
 	}
 
 	return end, data[start:end], err
